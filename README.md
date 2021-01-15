@@ -12,4 +12,4 @@ Uses [OpenWeather API](https://openweathermap.org/api) for real-time weather dat
 
 ## **Screenshot**
 
-![screenshot of webpage](Assets/appscrnshot.png)
+![screenshot of webpage](Assets/app-screenshot.png)
