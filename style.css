@@ -1,0 +1,100 @@
+#todays-info {
+  display: none;
+}
+
+#todays-stats-col {
+  display: none;
+}
+
+#forecast-row-title {
+  display: none;
+}
+
+#forecast-row {
+  display: none;
+}
+
+/* override weather-icons css */
+.wi {
+  font-size: 1.5rem;
+  color: grey;
+}
+
+#cloud-icon {
+  margin-right: 4px;
+}
+
+#search-bar-group {
+  width: 40%;
+}
+
+#app-body {
+  margin-top: 160px;
+  margin-bottom: 10px;
+}
+
+#dropdown-pins {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: auto;
+}
+
+#todays-date {
+  color: gray;
+}
+
+#city-name {
+  font-weight: bold;
+}
+
+#todays-weather,.forecast-weather-icon {
+  width: 64px;
+  height: 64px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#forecast-row-title {
+  margin-top: 36px;
+}
+
+.forecast-temperature {
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 900px) {
+  #search-bar-group {
+    width: 60%;
+  }
+
+  #app-body {
+    margin-top: 154px;
+  }
+
+  #forecast-row-title {
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  #search-bar-group {
+    width: 100%;
+  }
+
+  #app-body {
+    margin-top: 148px;
+  }
+}
+
+@media only screen and (max-width: 312px) {
+  #app-body {
+    margin-top: 174px;
+  }
+}
+
+@media only screen and (max-width: 230px) {
+  #dropdown-pins {
+    display: none;
+  }
+}
