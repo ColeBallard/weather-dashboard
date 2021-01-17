@@ -40,6 +40,10 @@
   width: auto;
 }
 
+#remove-pin-btn {
+  display: none;
+}
+
 #todays-date {
   color: gray;
 }

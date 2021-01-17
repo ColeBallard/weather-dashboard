@@ -40,6 +40,18 @@ function search(location) {
 
         setUVElement($(card).find('.forecast-uv'), response.daily[dayIndex + 1].uvi);
 
+        if ($('#dropdown-pins .dropdown-menu').children().length != 0) {
+          let existsFlag = false;
+    
+          $('#dropdown-pins .dropdown-menu li').each((index, pinnedCity) => {
+            if ($('#city-name').text().localeCompare($(pinnedCity).text()) == 0) 
+              existsFlag = true;
+          });
+    
+          if (existsFlag) $('#remove-pin-btn').show();
+          else $('#remove-pin-btn').hide();
+        }
+
         showDisplay();
       });
     });
@@ -71,7 +83,50 @@ function showDisplay() {
   $('#forecast-row').show();
 }
 
+function renderPinList() {
+  let pins;
+
+  if (!localStorage.getItem('pins')) 
+    return;
+  else 
+    pins = JSON.parse(localStorage.getItem('pins'));
+  
+  let currentCityListItem;
+  for (let x of pins) {
+    $('#dropdown-pins .dropdown-menu').append(
+      $('<li/>').append(
+        $('<a/>', {'class' : 'dropdown-item', 'href' : '#'})
+      )
+    );
+
+    currentCityListItem = $('#dropdown-pins .dropdown-menu li').last();
+
+    currentCityListItem.find('a').text(x);
+    currentCityListItem.on('click', (event) => {
+      event.preventDefault();
+      search(x);
+    });
+  }
+}
+
+function removeCity(city, pins) {
+  let array = [], length = pins.length;
+
+  for (let i = 0; i <= (length - 1); i++) {
+    if (city.localeCompare(pins[i]) != 0)
+      array.push(pins[i]);
+  }
+
+  for (let j = 0; j <= (length - 1); j++)
+    pins.pop();
+
+  for (let k = 0; k <= (length - 2); k++)
+    pins.push(array[k]);
+}
+
 $(document).ready(() =>  {
+  renderPinList();
+
   $('#search-bar').on('keydown', (event) => {
     if (event.keyCode == KeyEvent.DOM_VK_RETURN) 
       $('#search-btn').click();
@@ -82,6 +137,39 @@ $(document).ready(() =>  {
     search($('#search-bar').val());
   });
 
+  $('#remove-pin-btn').on('click', (event) => {
+    event.preventDefault();
+
+    let pins;
+    if (localStorage.getItem('pins')) 
+      pins = JSON.parse(localStorage.getItem('pins'));
+    else {
+      console.log('ERROR - unable to remove pin');
+      return;
+    }
+
+    if ($('#dropdown-pins .dropdown-menu').children().length != 0) {
+      let matchingCity;
+
+      $('#dropdown-pins .dropdown-menu li').each((index, pinnedCity) => {
+        if ($('#city-name').text().localeCompare($(pinnedCity).text()) == 0) {
+          matchingCity = $(pinnedCity);
+        }
+      });
+
+      removeCity(matchingCity.text(), pins);
+      if (pins.length == 0)
+        localStorage.removeItem('pins');
+      else
+        localStorage.setItem('pins', JSON.stringify(pins));
+
+      matchingCity.remove();
+    }
+    else console.log('ERROR - unable to remove pin');
+
+    $('#remove-pin-btn').hide();
+  });
+
   $('#pin-btn').on('click', (event) => {
     event.preventDefault();
 
@@ -89,15 +177,13 @@ $(document).ready(() =>  {
 
     if (!currentCity)
       return;
-
-    let existsFlag = false;
     
     if ($('#dropdown-pins .dropdown-menu').children().length != 0) {
+      let existsFlag = false;
+
       $('#dropdown-pins .dropdown-menu li').each((index, pinnedCity) => {
-        if (currentCity.localeCompare($(pinnedCity).text()) == 0) {
+        if (currentCity.localeCompare($(pinnedCity).text()) == 0)
           existsFlag = true;
-          return;
-        }
       });
 
       if (existsFlag) return;
@@ -105,6 +191,14 @@ $(document).ready(() =>  {
     
     if ($('#dropdown-pins .dropdown-menu').children().length >= 8)
       return;
+
+    if (!localStorage.getItem('pins')) 
+      localStorage.setItem('pins', JSON.stringify([currentCity]));
+    else {
+      let pins = JSON.parse(localStorage.getItem('pins'));
+      pins.push(currentCity);
+      localStorage.setItem('pins', JSON.stringify(pins));
+    }
    
     $('#dropdown-pins .dropdown-menu').append(
       $('<li/>').append(
@@ -119,5 +213,7 @@ $(document).ready(() =>  {
       event.preventDefault();
       search(currentCity);
     });
+
+    $('#remove-pin-btn').show();
   });
 });
