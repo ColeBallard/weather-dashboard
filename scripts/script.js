@@ -1,6 +1,6 @@
 function search(location) {
 
-  let weatherQueryURL = 'http://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=' +  API_KEY;
+  let weatherQueryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=' +  API_KEY;
   let oneCallQueryURL;
 
   $.ajax({
