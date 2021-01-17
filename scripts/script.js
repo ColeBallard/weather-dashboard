@@ -22,7 +22,7 @@ function search(location) {
 
     $('#todays-wind-speed').text(response.wind.speed + ' MPH');
 
-    oneCallQueryURL = 'http://api.openweathermap.org/data/2.5/onecall?lat=' + response.coord.lat + '&lon=' + response.coord.lon + '&units=imperial&appid=' + API_KEY;
+    oneCallQueryURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + response.coord.lat + '&lon=' + response.coord.lon + '&units=imperial&appid=' + API_KEY;
 
     $.ajax({
       url: oneCallQueryURL,
