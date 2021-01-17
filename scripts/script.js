@@ -102,9 +102,10 @@ $(document).ready(() =>  {
 
       if (existsFlag) return;
     }
-
-
-
+    
+    if ($('#dropdown-pins .dropdown-menu').children().length >= 8)
+      return;
+   
     $('#dropdown-pins .dropdown-menu').append(
       $('<li/>').append(
         $('<a/>', {'class' : 'dropdown-item', 'href' : '#'})
@@ -117,6 +118,6 @@ $(document).ready(() =>  {
     currentCityListItem.on('click', (event) => {
       event.preventDefault();
       search(currentCity);
-    })
+    });
   });
 });

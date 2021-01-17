@@ -59,6 +59,11 @@
   margin-top: 36px;
 }
 
+.col-forecast {
+  width: 20%;
+  float: left;
+}
+
 .forecast-temperature {
   font-weight: bold;
 }
@@ -75,6 +80,12 @@
   #forecast-row-title {
     margin-top: 24px;
   }
+
+  .col-forecast {
+    width: 221px;
+    float: none;
+    margin: 0 auto;
+  }
 }
 
 @media only screen and (max-width: 650px) {
@@ -84,6 +95,16 @@
 
   #app-body {
     margin-top: 148px;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  #todays-stats {
+    border: none;
+  }
+
+  #todays-stats .card-body {
+    padding: 0;
   }
 }
 
