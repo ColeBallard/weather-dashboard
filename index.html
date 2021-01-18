@@ -30,6 +30,10 @@
       <h1 class="d-inline">Weather Dashboard</h1>
 
       <div class="input-group mx-auto my-3" id="search-bar-group">
+        <div class="toast hide" id="toast-invalid-search" data-bs-animation="true">
+          <div class="toast-body list-group-item-danger"></div>
+        </div>
+
         <input type="text" class="form-control" id="search-bar" placeholder="Search for city..">
         <button class="btn btn-primary" id="search-btn">
           <i class="bi bi-search"></i>
@@ -56,6 +60,9 @@
           <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false"></button>
           <ul class="dropdown-menu">
           </ul>
+          <div class="toast hide" id="toast-max-pins" data-bs-animation="true" data-bs-delay="2000">
+            <div class="toast-body list-group-item-danger">You can pin a maximum of 8 locations.</div>
+          </div>
         </div>
 
         <div id="todays-info">

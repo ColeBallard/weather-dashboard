@@ -5,9 +5,30 @@ function search(location) {
 
   $.ajax({
     url: weatherQueryURL,
-    method: 'GET'
+    method: 'GET',
+    statusCode: {
+      404: function() {
+        console.log('error 404');
+        $('#toast-invalid-search .toast-body').text(TOAST_MSG.INVALID_SEARCH);
+        $('#toast-invalid-search').attr('data-bs-delay', 3000);
+        $('#toast-invalid-search').toast('show');
+        return;
+      },
+      429: function() {
+        console.log('error 429');
+        $('#toast-invalid-search .toast-body').text(TOAST_MSG.MAX_REQUESTS);
+        $('#toast-invalid-search').attr('data-bs-delay', 6000);
+        $('#toast-invalid-search').toast('show');
+        return;
+      }
+    }
   }).then((response) => {
-    if (response == null) return;
+    if (response == null) {
+      $('#toast-invalid-search .toast-body').text(TOAST_MSG.INVALID_SEARCH);
+      $('#toast-invalid-search').attr('data-bs-delay', 3000);
+      $('#toast-invalid-search').toast('show');
+      return;
+    }
 
     $('#todays-date').text(moment().format('LL'));
 
@@ -26,7 +47,7 @@ function search(location) {
 
     $.ajax({
       url: oneCallQueryURL,
-      method: 'GET'
+      method: 'GET',
     }).then((response) => {
       setUVElement($('#todays-uv'), response.current.uvi);
 
@@ -126,7 +147,7 @@ function removeCity(city, pins) {
 
 $(document).ready(() =>  {
   renderPinList();
-
+  
   $('#search-bar').on('keydown', (event) => {
     if (event.keyCode == KeyEvent.DOM_VK_RETURN) 
       $('#search-btn').click();
@@ -189,8 +210,10 @@ $(document).ready(() =>  {
       if (existsFlag) return;
     }
     
-    if ($('#dropdown-pins .dropdown-menu').children().length >= 8)
+    if ($('#dropdown-pins .dropdown-menu').children().length >= 8) {
+      $('#toast-max-pins').toast('show');
       return;
+    }
 
     if (!localStorage.getItem('pins')) 
       localStorage.setItem('pins', JSON.stringify([currentCity]));
