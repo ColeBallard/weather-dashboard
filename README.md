@@ -10,4 +10,4 @@ Simple app that lets you search for a city's current weather and 5 day weather f
 
 Uses [OpenWeather API](https://openweathermap.org/api) for real-time weather data.
 
-![screenshot of webpage](Assets/app-screenshot.png)
+![screenshot of webpage](assets/app-screenshot.png)
