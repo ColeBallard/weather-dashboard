@@ -2,7 +2,7 @@
 
 ## **Link**
 
-https://coleballard.github.io/weather-dashboard
+https://coleb.io/weather-dashboard/
 
 ## **Description**
 
