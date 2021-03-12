@@ -1,82 +1,73 @@
 function search(location) {
-
-  let weatherQueryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + location + '&units=imperial&appid=' +  API_KEY;
-  let oneCallQueryURL;
-
   $.ajax({
-    url: weatherQueryURL,
+    url: `/api/${location}`,
     method: 'GET',
     statusCode: {
-      404: function() {
-        console.log('error 404');
+      400: () => {
+        $('#toast-invalid-search .toast-body').text(TOAST_MSG.BAD_API_KEY);
+        $('#toast-invalid-search').attr('data-bs-delay', 3000);
+        $('#toast-invalid-search').toast('show');
+        return;
+      },
+      401: () => {
+        $('#toast-invalid-search .toast-body').text(TOAST_MSG.BAD_API_KEY);
+        $('#toast-invalid-search').attr('data-bs-delay', 3000);
+        $('#toast-invalid-search').toast('show');
+        return;
+      },
+      404: () => {
         $('#toast-invalid-search .toast-body').text(TOAST_MSG.INVALID_SEARCH);
         $('#toast-invalid-search').attr('data-bs-delay', 3000);
         $('#toast-invalid-search').toast('show');
         return;
       },
-      429: function() {
-        console.log('error 429');
+      429: () => {
         $('#toast-invalid-search .toast-body').text(TOAST_MSG.MAX_REQUESTS);
         $('#toast-invalid-search').attr('data-bs-delay', 6000);
         $('#toast-invalid-search').toast('show');
         return;
       }
     }
-  }).then((response) => {
-    if (response == null) {
-      $('#toast-invalid-search .toast-body').text(TOAST_MSG.INVALID_SEARCH);
-      $('#toast-invalid-search').attr('data-bs-delay', 3000);
-      $('#toast-invalid-search').toast('show');
-      return;
-    }
-
+  }).then(response => {
     $('#todays-date').text(moment().format('LL'));
 
-    $('#city-name').text(response.name + ', ' + response.sys.country);
+    $('#city-name').text(response.name + ', ' + response.country);
 
-    $('#todays-weather').attr('src', 'http://openweathermap.org/img/wn/' + response.weather[0].icon + '@2x.png');
-    $('#todays-weather').attr('alt', response.weather[0].description);
+    $('#todays-weather').attr('src', 'http://openweathermap.org/img/wn/' + response.icon + '@2x.png');
+    $('#todays-weather').attr('alt', response.desc);
 
-    $('#todays-temperature').text(response.main.temp + String.fromCharCode(176) + 'F');
+    $('#todays-temperature').text(response.temp + String.fromCharCode(176) + 'F');
 
-    $('#todays-humidity').text(response.main.humidity + '%');
+    $('#todays-humidity').text(response.hum + '%');
 
-    $('#todays-wind-speed').text(response.wind.speed + ' MPH');
+    $('#todays-wind-speed').text(response.wind + ' MPH');
 
-    oneCallQueryURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + response.coord.lat + '&lon=' + response.coord.lon + '&units=imperial&appid=' + API_KEY;
+    setUVElement($('#todays-uv'), response.uvi);
 
-    $.ajax({
-      url: oneCallQueryURL,
-      method: 'GET',
-    }).then((response) => {
-      setUVElement($('#todays-uv'), response.current.uvi);
+    $('#forecast-row .card').each((dayIndex, card) => {
+      $(card).find('.forecast-date').text(moment().add(dayIndex + 1, 'days').format('LL'));
 
-      $('#forecast-row .card').each((dayIndex, card) => {
-        $(card).find('.forecast-date').text(moment().add(dayIndex + 1, 'days').format('LL'));
+      $(card).find('.forecast-weather-icon').attr('src', 'http://openweathermap.org/img/wn/' + response.daily[dayIndex + 1].weather[0].icon + '@2x.png');
+      $(card).find('.forecast-weather-icon').attr('alt', response.daily[dayIndex + 1].weather[0].description);
 
-        $(card).find('.forecast-weather-icon').attr('src', 'http://openweathermap.org/img/wn/' + response.daily[dayIndex + 1].weather[0].icon + '@2x.png');
-        $(card).find('.forecast-weather-icon').attr('alt', response.daily[dayIndex + 1].weather[0].description);
+      $(card).find('.forecast-temperature').text(response.daily[dayIndex + 1].temp.day + String.fromCharCode(176) + 'F');
 
-        $(card).find('.forecast-temperature').text(response.daily[dayIndex + 1].temp.day + String.fromCharCode(176) + 'F');
+      setUVElement($(card).find('.forecast-uv'), response.daily[dayIndex + 1].uvi);
 
-        setUVElement($(card).find('.forecast-uv'), response.daily[dayIndex + 1].uvi);
+      if ($('#dropdown-pins .dropdown-menu').children().length != 0) {
+        let existsFlag = false;
+  
+        $('#dropdown-pins .dropdown-menu li').each((index, pinnedCity) => {
+          if ($('#city-name').text().localeCompare($(pinnedCity).text()) == 0) 
+            existsFlag = true;
+        });
+  
+        if (existsFlag) $('#remove-pin-btn').show();
+        else $('#remove-pin-btn').hide();
+      }
 
-        if ($('#dropdown-pins .dropdown-menu').children().length != 0) {
-          let existsFlag = false;
-    
-          $('#dropdown-pins .dropdown-menu li').each((index, pinnedCity) => {
-            if ($('#city-name').text().localeCompare($(pinnedCity).text()) == 0) 
-              existsFlag = true;
-          });
-    
-          if (existsFlag) $('#remove-pin-btn').show();
-          else $('#remove-pin-btn').hide();
-        }
-
-        showDisplay();
-      });
+      showDisplay();
     });
-
   });
 }
 
