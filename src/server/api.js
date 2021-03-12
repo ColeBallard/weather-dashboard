@@ -9,11 +9,6 @@ router.get("/api/:city", (req, res) => {
     url: `https://api.openweathermap.org/data/2.5/weather?q=${req.params.city}&units=imperial&appid=${process.env.OW_API_KEY}`,
     method: 'get'
   }).then(response => {
-    if (!response) {
-      console.log('error 400');
-      
-      return;
-    } console.log(response.status);
     data.name = response.data.name;
     data.country = response.data.sys.country;
     data.icon = response.data.weather[0].icon;
