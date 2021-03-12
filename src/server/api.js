@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const axios = require("axios");
 const path = require("path");
+require('dotenv').config;
 
 router.get("/api/:city", (req, res) => {
   const data = {};
