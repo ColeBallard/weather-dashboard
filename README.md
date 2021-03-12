@@ -12,6 +12,10 @@ Uses [OpenWeather API](https://openweathermap.org/api) for real-time weather dat
 
 ## **Contribution**
 
+If you have an idea or want to report a bug, please create an issue.
+
+Otherwise:
+
 1. Clone the repository.
 
 ```shell
@@ -37,3 +41,5 @@ OW_API_KEY=YourApiKey
 ```
 
 6. Make a pull request.
+
+## **[Contact](https://coleb.io/contact)**
