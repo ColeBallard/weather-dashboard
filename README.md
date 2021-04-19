@@ -28,7 +28,7 @@ cd src/server
 npm init -y
 ```
 
-3. Create env file.
+3. Create .env file.
 ```shell
 touch .env
 ```
