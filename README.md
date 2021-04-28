@@ -28,12 +28,12 @@ cd src/server
 npm init -y
 ```
 
-3. Create .env file.
+3. [Create OpenWeather account.](https://home.openweathermap.org/users/sign_up)
+
+4. Create .env file.
 ```shell
 touch .env
 ```
-
-4. [Create OpenWeather account.](https://home.openweathermap.org/users/sign_up)
 
 5. Add api key to .env file.
 ```dosini
