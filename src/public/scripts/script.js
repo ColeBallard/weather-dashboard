@@ -100,7 +100,7 @@ function renderPinList() {
 
   if (!localStorage.getItem('pins')) {
     $('#dropdown-pins .dropdown-menu').append(
-      $('<li/>', {'class' : 'dropdown-item'})
+      $('<li/>', {'class' : 'dropdown-item', 'id' : 'no-cities-added'})
     );
     currentListItem = $('#dropdown-pins .dropdown-menu li').last();
 
@@ -142,6 +142,15 @@ function removeCity(city, pins) {
 
   for (let k = 0; k <= (length - 2); k++)
     pins.push(array[k]);
+
+  if (pins.length == 0) {
+    $('#dropdown-pins .dropdown-menu').append(
+      $('<li/>', {'class' : 'dropdown-item', 'id' : 'no-cities-added'})
+    );
+    currentListItem = $('#dropdown-pins .dropdown-menu li').last();
+
+    currentListItem.text('No cities added.');
+  }
 }
 
 $(document).ready(() =>  {
@@ -213,6 +222,8 @@ $(document).ready(() =>  {
       $('#toast-max-pins').toast('show');
       return;
     }
+
+    $('#no-cities-added').remove();
 
     if (!localStorage.getItem('pins')) 
       localStorage.setItem('pins', JSON.stringify([currentCity]));
