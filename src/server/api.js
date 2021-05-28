@@ -5,7 +5,6 @@ require('dotenv').config();
 
 router.get("/api/:city", (req, res) => {
   const data = {};
-  console.log(`https://api.openweathermap.org/data/2.5/weather?q=${req.params.city}&units=imperial&appid=${process.env.OW_API_KEY}`)
   axios({
     url: `https://api.openweathermap.org/data/2.5/weather?q=${req.params.city}&units=imperial&appid=${process.env.OW_API_KEY}`,
     method: 'get'
