@@ -98,8 +98,16 @@ function showDisplay() {
 function renderPinList() {
   let pins;
 
-  if (!localStorage.getItem('pins')) 
+  if (!localStorage.getItem('pins')) {
+    $('#dropdown-pins .dropdown-menu').append(
+      $('<li/>', {'class' : 'dropdown-item'})
+    );
+    currentListItem = $('#dropdown-pins .dropdown-menu li').last();
+
+    currentListItem.text('No cities added.');
     return;
+  }
+    
   else 
     pins = JSON.parse(localStorage.getItem('pins'));
   
