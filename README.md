@@ -42,4 +42,4 @@ OW_API_KEY=YourApiKey
 
 6. Make a pull request.
 
-## **[Contact](https://coleb.io/contact)**
+## **[Contact](https://github.com/ColeBallard/coleballard.github.io/blob/main/README.md)**
